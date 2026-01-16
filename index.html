@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Easy Pills - Smart Medication Adherence</title>
+    <meta name="description" content="Enterprise-grade IoT ecosystem integrating biometric security, precision robotics, and cloud telemetry for medication adherence." />
+    
+    <!-- Fonts - Elegant & Professional -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- GSAP for scroll animations -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollToPlugin.min.js"></script>
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <!-- Lenis Smooth Scroll -->
+    <script src="https://unpkg.com/lenis@1.1.14/dist/lenis.min.js"></script>
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Cursor follower -->
+    <div class="cursor" id="cursor"></div>
+    <div class="cursor-follower" id="cursor-follower"></div>
+
+    <!-- Preloader -->
+    <div class="preloader" id="preloader">
+        <div class="preloader-content">
+            <div class="preloader-logo">
+                <span class="preloader-text">Easy</span>
+                <span class="preloader-text accent">Pills</span>
+            </div>
+            <div class="preloader-line"></div>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="nav" id="nav">
+        <div class="nav-inner">
+            <a href="#" class="nav-logo">
+                <div class="nav-logo-icon">
+                    <i data-lucide="pill"></i>
+                </div>
+                <span class="nav-logo-text">Easy<span class="italic">Pills</span></span>
+            </a>
+
+            <div class="nav-links">
+                <a href="#mission" class="nav-link">
+                    <span data-en="Mission" data-ar="المهمة">Mission</span>
+                </a>
+                <a href="#technology" class="nav-link">
+                    <span data-en="Technology" data-ar="التقنية">Technology</span>
+                </a>
+                <a href="#process" class="nav-link">
+                    <span data-en="Process" data-ar="العملية">Process</span>
+                </a>
+                <a href="#team" class="nav-link">
+                    <span data-en="Team" data-ar="الفريق">Team</span>
+                </a>
+            </div>
+
+            <div class="nav-actions">
+                <button class="lang-toggle" id="lang-toggle" aria-label="Toggle language">
+                    <span class="lang-icon">🌐</span>
+                    <span class="lang-text" id="lang-text">العربية</span>
+                </button>
+                <button class="nav-toggle" id="nav-toggle" aria-label="Toggle menu">
+                    <span class="nav-toggle-line"></span>
+                    <span class="nav-toggle-line"></span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu" id="mobile-menu">
+        <div class="mobile-menu-inner">
+            <a href="#mission" class="mobile-menu-link">
+                <span class="mobile-menu-link-number">01</span>
+                <span class="mobile-menu-link-text" data-en="Mission" data-ar="المهمة">Mission</span>
+            </a>
+            <a href="#technology" class="mobile-menu-link">
+                <span class="mobile-menu-link-number">02</span>
+                <span class="mobile-menu-link-text" data-en="Technology" data-ar="التقنية">Technology</span>
+            </a>
+            <a href="#process" class="mobile-menu-link">
+                <span class="mobile-menu-link-number">03</span>
+                <span class="mobile-menu-link-text" data-en="Process" data-ar="العملية">Process</span>
+            </a>
+            <a href="#team" class="mobile-menu-link">
+                <span class="mobile-menu-link-number">04</span>
+                <span class="mobile-menu-link-text" data-en="Team" data-ar="الفريق">Team</span>
+            </a>
+            <button class="mobile-lang-toggle" id="mobile-lang-toggle">
+                <span>🌐</span>
+                <span data-en="العربية" data-ar="English">العربية</span>
+            </button>
+        </div>
+    </div>
+
+    <main>
+        <!-- Hero Section -->
+        <section class="hero" id="hero">
+            <div class="hero-circle hero-circle-1"></div>
+            <div class="hero-circle hero-circle-2"></div>
+            
+            <div class="hero-content">
+                <div class="hero-badge">
+                    <span class="hero-badge-dot"></span>
+                    <span class="hero-badge-text" data-en="Senior Design Project 2026" data-ar="مشروع التصميم النهائي 2026">Senior Design Project 2026</span>
+                </div>
+
+                <h1 class="hero-title">
+                    <span class="hero-title-line">
+                        <span class="hero-word" data-en="Easy Pills" data-ar="إيزي بيلز">Easy Pills</span>
+                        <span class="hero-word italic" data-en="is a" data-ar="هو">is a</span>
+                    </span>
+                    <span class="hero-title-line">
+                        <span class="hero-word italic" data-en="smart" data-ar="نظام">smart</span>
+                        <span class="hero-word" data-en="medication" data-ar="ذكي لإدارة">medication</span>
+                    </span>
+                    <span class="hero-title-line">
+                        <span class="hero-word" data-en="adherence system" data-ar="الالتزام بالأدوية">adherence system</span>
+                    </span>
+                </h1>
+
+                <div class="hero-actions">
+                    <a href="#technology" class="btn btn-primary">
+                        <span data-en="See Our Work" data-ar="شاهد أعمالنا">See Our Work</span>
+                    </a>
+                    <a href="#mission" class="btn btn-outline">
+                        <span data-en="Get in Touch" data-ar="تواصل معنا">Get in Touch</span>
+                    </a>
+                </div>
+            </div>
+
+            <div class="hero-scroll">
+                <span class="hero-scroll-text" data-en="Scroll" data-ar="اسحب">Scroll</span>
+                <div class="hero-scroll-line"></div>
+            </div>
+        </section>
+
+        <!-- Mission Section -->
+        <section class="section mission-section" id="mission">
+            <div class="container">
+                <div class="section-header">
+                    <span class="section-number">01</span>
+                    <h2 class="section-label" data-en="The Challenge" data-ar="التحدي">The Challenge</h2>
+                </div>
+
+                <div class="mission-grid">
+                    <div class="mission-problem">
+                        <h3 class="mission-title" data-en="The Adherence Crisis" data-ar="أزمة الالتزام بالأدوية">
+                            The Adherence Crisis
+                        </h3>
+                        <p class="mission-text" data-en="Medication non-adherence accounts for nearly 50% of treatment failures and 125,000 deaths annually. The inability to track, verify, and dispense medication securely creates a gap in the healthcare continuum." data-ar="يمثل عدم الالتزام بالأدوية ما يقارب 50٪ من حالات فشل العلاج و125,000 حالة وفاة سنويًا. عدم القدرة على تتبع الأدوية والتحقق منها وصرفها بشكل آمن يخلق فجوة في منظومة الرعاية الصحية.">
+                            Medication non-adherence accounts for nearly 50% of treatment failures 
+                            and 125,000 deaths annually. The inability to track, verify, and dispense 
+                            medication securely creates a gap in the healthcare continuum.
+                        </p>
+
+                        <div class="stats-grid">
+                            <div class="stat-card">
+                                <span class="stat-value" data-counter="50">0</span>
+                                <span class="stat-suffix">%</span>
+                                <span class="stat-label" data-en="Treatment Failure" data-ar="فشل العلاج">Treatment Failure</span>
+                            </div>
+                            <div class="stat-card">
+                                <span class="stat-prefix">$</span>
+                                <span class="stat-value" data-counter="100">0</span>
+                                <span class="stat-suffix">B+</span>
+                                <span class="stat-label" data-en="Annual Costs" data-ar="التكاليف السنوية">Annual Costs</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mission-solution" id="solution">
+                        <div class="section-header">
+                            <h2 class="section-label" data-en="The Solution" data-ar="الحل">The Solution</h2>
+                        </div>
+                        <h3 class="mission-title" data-en="Intelligent Automation" data-ar="الأتمتة الذكية">
+                            Intelligent Automation
+                        </h3>
+                        <p class="mission-text" data-en="Easy Pills creates a closed-loop system. By combining biometric authentication with automated dispensing motors and cloud logging, we eliminate human error and unauthorized access." data-ar="يخلق إيزي بيلز نظامًا مغلق الحلقة. من خلال الجمع بين المصادقة البيومترية ومحركات الصرف الآلي وتسجيل السحابة، نقضي على الأخطاء البشرية والوصول غير المصرح به.">
+                            Easy Pills creates a closed-loop system. By combining biometric 
+                            authentication with automated dispensing motors and cloud logging, 
+                            we eliminate human error and unauthorized access.
+                        </p>
+
+                        <ul class="feature-list">
+                            <li class="feature-list-item">
+                                <span class="feature-list-dot"></span>
+                                <span class="feature-list-text" data-en="Zero-Trust Biometric Access" data-ar="الوصول البيومتري بدون ثقة">Zero-Trust Biometric Access</span>
+                            </li>
+                            <li class="feature-list-item">
+                                <span class="feature-list-dot"></span>
+                                <span class="feature-list-text" data-en="Real-Time Cloud Telemetry" data-ar="القياس عن بعد السحابي الفوري">Real-Time Cloud Telemetry</span>
+                            </li>
+                            <li class="feature-list-item">
+                                <span class="feature-list-dot"></span>
+                                <span class="feature-list-text" data-en="Precision Stepper Motors" data-ar="محركات خطوة دقيقة">Precision Stepper Motors</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Technology Section -->
+        <section class="section tech-section" id="technology">
+            <div class="container">
+                <div class="section-header section-header-full">
+                    <span class="section-number">02</span>
+                    <h2 class="section-title-large" data-en="Technical Specifications" data-ar="المواصفات التقنية">
+                        Technical Specifications
+                    </h2>
+                    <p class="section-description" data-en="A comprehensive overview of the hardware and software subsystems powering the device." data-ar="نظرة شاملة على الأنظمة الفرعية للأجهزة والبرامج التي تشغل الجهاز.">
+                        A comprehensive overview of the hardware and software 
+                        subsystems powering the device.
+                    </p>
+                </div>
+
+                <div class="tech-grid">
+                    <div class="tech-card">
+                        <div class="tech-card-icon">
+                            <i data-lucide="fingerprint"></i>
+                        </div>
+                        <h3 class="tech-card-title" data-en="Biometric Identity" data-ar="الهوية البيومترية">Biometric Identity</h3>
+                        <p class="tech-card-text" data-en="Optical fingerprint sensor enabling multi-user authentication with 99.9% accuracy." data-ar="مستشعر بصمة بصري يتيح المصادقة متعددة المستخدمين بدقة 99.9٪.">
+                            Optical fingerprint sensor enabling multi-user 
+                            authentication with 99.9% accuracy.
+                        </p>
+                    </div>
+
+                    <div class="tech-card">
+                        <div class="tech-card-icon">
+                            <i data-lucide="cog"></i>
+                        </div>
+                        <h3 class="tech-card-title" data-en="Robotic Dispensing" data-ar="الصرف الآلي">Robotic Dispensing</h3>
+                        <p class="tech-card-text" data-en="NEMA-17 stepper motors provide precise rotational control for exact dosage delivery." data-ar="توفر محركات NEMA-17 التحكم الدوراني الدقيق لتوصيل الجرعة بدقة.">
+                            NEMA-17 stepper motors provide precise rotational 
+                            control for exact dosage delivery.
+                        </p>
+                    </div>
+
+                    <div class="tech-card">
+                        <div class="tech-card-icon">
+                            <i data-lucide="cloud"></i>
+                        </div>
+                        <h3 class="tech-card-title" data-en="Cloud Infrastructure" data-ar="البنية السحابية">Cloud Infrastructure</h3>
+                        <p class="tech-card-text" data-en="Firebase Realtime Database integration for instant synchronization of logs and schedules." data-ar="تكامل قاعدة بيانات Firebase للمزامنة الفورية للسجلات والجداول.">
+                            Firebase Realtime Database integration for instant 
+                            synchronization of logs and schedules.
+                        </p>
+                    </div>
+
+                    <div class="tech-card">
+                        <div class="tech-card-icon">
+                            <i data-lucide="lock"></i>
+                        </div>
+                        <h3 class="tech-card-title" data-en="Security Protocols" data-ar="بروتوكولات الأمان">Security Protocols</h3>
+                        <p class="tech-card-text" data-en="Physical chassis reinforcement combined with digital locking mechanisms." data-ar="تعزيز الهيكل المادي مع آليات القفل الرقمية.">
+                            Physical chassis reinforcement combined with 
+                            digital locking mechanisms.
+                        </p>
+                    </div>
+
+                    <div class="tech-card">
+                        <div class="tech-card-icon">
+                            <i data-lucide="bell"></i>
+                        </div>
+                        <h3 class="tech-card-title" data-en="Smart Notifications" data-ar="الإشعارات الذكية">Smart Notifications</h3>
+                        <p class="tech-card-text" data-en="Local audiovisual alerts synchronized with mobile push notifications." data-ar="تنبيهات صوتية ومرئية محلية متزامنة مع إشعارات الهاتف.">
+                            Local audiovisual alerts synchronized with 
+                            mobile push notifications.
+                        </p>
+                    </div>
+
+                    <div class="tech-card">
+                        <div class="tech-card-icon">
+                            <i data-lucide="calendar-clock"></i>
+                        </div>
+                        <h3 class="tech-card-title" data-en="Inventory Intelligence" data-ar="ذكاء المخزون">Inventory Intelligence</h3>
+                        <p class="tech-card-text" data-en="Automated tracking of remaining pill counts and expiration dates." data-ar="تتبع تلقائي لعدد الحبوب المتبقية وتواريخ انتهاء الصلاحية.">
+                            Automated tracking of remaining pill counts 
+                            and expiration dates.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Process Section -->
+        <section class="section process-section" id="process">
+            <div class="container">
+                <div class="section-header">
+                    <span class="section-number">03</span>
+                    <h2 class="section-title-large" data-en="Process Architecture" data-ar="هندسة العملية">
+                        Process Architecture
+                    </h2>
+                </div>
+
+                <div class="process-timeline">
+                    <div class="process-step">
+                        <div class="process-step-number">01</div>
+                        <div class="process-step-content">
+                            <div class="process-step-line"></div>
+                            <h3 class="process-step-title" data-en="Configuration" data-ar="التكوين">Configuration</h3>
+                            <p class="process-step-text" data-en="Prescription schedule is set via App." data-ar="يتم تعيين جدول الوصفة عبر التطبيق.">
+                                Prescription schedule is set via App.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="process-step">
+                        <div class="process-step-number">02</div>
+                        <div class="process-step-content">
+                            <div class="process-step-line"></div>
+                            <h3 class="process-step-title" data-en="Notification" data-ar="الإشعار">Notification</h3>
+                            <p class="process-step-text" data-en="Device alerts user at scheduled time." data-ar="الجهاز ينبه المستخدم في الوقت المحدد.">
+                                Device alerts user at scheduled time.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="process-step">
+                        <div class="process-step-number">03</div>
+                        <div class="process-step-content">
+                            <div class="process-step-line"></div>
+                            <h3 class="process-step-title" data-en="Authentication" data-ar="المصادقة">Authentication</h3>
+                            <p class="process-step-text" data-en="Biometric scan verifies patient identity." data-ar="المسح البيومتري يتحقق من هوية المريض.">
+                                Biometric scan verifies patient identity.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="process-step">
+                        <div class="process-step-number">04</div>
+                        <div class="process-step-content">
+                            <div class="process-step-line"></div>
+                            <h3 class="process-step-title" data-en="Actuation" data-ar="التشغيل">Actuation</h3>
+                            <p class="process-step-text" data-en="Motor drives dispensing mechanism." data-ar="المحرك يشغل آلية الصرف.">
+                                Motor drives dispensing mechanism.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="process-step">
+                        <div class="process-step-number">05</div>
+                        <div class="process-step-content">
+                            <div class="process-step-line"></div>
+                            <h3 class="process-step-title" data-en="Telemetry" data-ar="القياس عن بعد">Telemetry</h3>
+                            <p class="process-step-text" data-en="Adherence event logged to cloud." data-ar="تسجيل حدث الالتزام في السحابة.">
+                                Adherence event logged to cloud.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Status Section -->
+        <section class="section status-section" id="status">
+            <div class="container">
+                <div class="status-grid">
+                    <div class="status-stack">
+                        <div class="section-header">
+                            <span class="section-number">04</span>
+                            <h2 class="section-label" data-en="Technology Stack" data-ar="مجموعة التقنيات">Technology Stack</h2>
+                        </div>
+
+                        <div class="stack-list">
+                            <div class="stack-item">
+                                <div class="stack-item-icon">
+                                    <i data-lucide="cpu"></i>
+                                </div>
+                                <div class="stack-item-content">
+                                    <h4 class="stack-item-title" data-en="Embedded Hardware" data-ar="الأجهزة المدمجة">Embedded Hardware</h4>
+                                    <p class="stack-item-text" data-en="ESP32 MCU • NEMA-17 Steppers • Optical Fingerprint Sensor • I2C LCD Integration" data-ar="ESP32 MCU • محركات NEMA-17 • مستشعر بصمة بصري • تكامل شاشة I2C LCD">
+                                        ESP32 MCU • NEMA-17 Steppers • Optical Fingerprint Sensor • I2C LCD Integration
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div class="stack-item">
+                                <div class="stack-item-icon">
+                                    <i data-lucide="database"></i>
+                                </div>
+                                <div class="stack-item-content">
+                                    <h4 class="stack-item-title" data-en="Software & Cloud" data-ar="البرمجيات والسحابة">Software & Cloud</h4>
+                                    <p class="stack-item-text" data-en="C++ Firmware • React Native Mobile Application • Firebase Realtime DB • MQTT Protocols" data-ar="برنامج C++ الثابت • تطبيق React Native للهاتف • قاعدة بيانات Firebase • بروتوكولات MQTT">
+                                        C++ Firmware • React Native Mobile Application • Firebase Realtime DB • MQTT Protocols
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="status-progress">
+                        <div class="section-header">
+                            <h2 class="section-label" data-en="Development Status" data-ar="حالة التطوير">Development Status</h2>
+                        </div>
+
+                        <div class="progress-list">
+                            <div class="progress-item">
+                                <span class="progress-item-label" data-en="Hardware Prototyping" data-ar="النموذج الأولي للأجهزة">Hardware Prototyping</span>
+                                <span class="progress-item-status progress-item-status--completed" data-en="Completed" data-ar="مكتمل">Completed</span>
+                            </div>
+                            <div class="progress-item">
+                                <span class="progress-item-label" data-en="Firmware Logic" data-ar="منطق البرنامج الثابت">Firmware Logic</span>
+                                <span class="progress-item-status progress-item-status--completed" data-en="Completed" data-ar="مكتمل">Completed</span>
+                            </div>
+                            <div class="progress-item">
+                                <span class="progress-item-label" data-en="Cloud Integration" data-ar="التكامل السحابي">Cloud Integration</span>
+                                <span class="progress-item-status progress-item-status--progress" data-en="In Progress" data-ar="قيد التنفيذ">In Progress</span>
+                            </div>
+                            <div class="progress-item">
+                                <span class="progress-item-label" data-en="Mobile App UI" data-ar="واجهة تطبيق الهاتف">Mobile App UI</span>
+                                <span class="progress-item-status progress-item-status--testing" data-en="Testing" data-ar="اختبار">Testing</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Team Section -->
+        <section class="section team-section" id="team">
+            <div class="container">
+                <div class="section-header section-header-center">
+                    <h2 class="section-title-large" data-en="Project Team" data-ar="فريق المشروع">
+                        Project Team
+                    </h2>
+                </div>
+
+                <div class="team-grid">
+                    <div class="team-card">
+                        <div class="team-card-content">
+                            <h3 class="team-card-name">Giorgi Berikashvili</h3>
+                            <span class="team-card-role" data-en="Hardware Engineering" data-ar="هندسة الأجهزة">Hardware Engineering</span>
+                        </div>
+                    </div>
+
+                    <div class="team-card">
+                        <div class="team-card-content">
+                            <h3 class="team-card-name">Teodore Gelashvili</h3>
+                            <span class="team-card-role" data-en="Firmware Development" data-ar="تطوير البرنامج الثابت">Firmware Development</span>
+                        </div>
+                    </div>
+
+                    <div class="team-card">
+                        <div class="team-card-content">
+                            <h3 class="team-card-name">Yousef Maher</h3>
+                            <span class="team-card-role" data-en="Cloud Architecture" data-ar="هندسة السحابة">Cloud Architecture</span>
+                        </div>
+                    </div>
+
+                    <div class="team-card">
+                        <div class="team-card-content">
+                            <h3 class="team-card-name">Rayan Jalwan</h3>
+                            <span class="team-card-role" data-en="Mobile Application" data-ar="تطبيق الهاتف">Mobile Application</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-inner">
+                <div class="footer-brand">
+                    <h3 class="footer-title">Easy<span class="italic">Pills</span></h3>
+                    <p class="footer-subtitle" data-en="Intelligent Medication Management" data-ar="إدارة الأدوية الذكية">Intelligent Medication Management</p>
+                </div>
+
+                <div class="footer-info">
+                    <p class="footer-org">Ilia State University</p>
+                    <p class="footer-project" data-en="Senior Design Project 2026" data-ar="مشروع التصميم النهائي 2026">Senior Design Project 2026</p>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p class="footer-copyright">© 2026 Easy Pills. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- AI Chatbot -->
+    <button class="chat-toggle" id="chat-toggle" aria-label="Open AI Chat">
+        <svg class="chat-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="m3 21 1.9-5.7a8.5 8.5 0 1 1 3.8 3.8z"></path>
+        </svg>
+        <svg class="chat-close-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 6 6 18"></path>
+            <path d="m6 6 12 12"></path>
+        </svg>
+    </button>
+
+    <div class="chat-window" id="chat-window">
+        <div class="chat-header">
+            <div class="chat-header-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 8V4H8"></path>
+                    <rect width="16" height="12" x="4" y="8" rx="2"></rect>
+                    <path d="M2 14h2"></path>
+                    <path d="M20 14h2"></path>
+                    <path d="M15 13v2"></path>
+                    <path d="M9 13v2"></path>
+                </svg>
+            </div>
+            <div class="chat-header-info">
+                <h3 class="chat-header-title">Easy Pills Assistant</h3>
+                <span class="chat-header-status">Online</span>
+            </div>
+        </div>
+        
+        <div class="chat-messages" id="chat-messages">
+            <!-- Messages will be added here dynamically -->
+        </div>
+        
+        <div class="chat-input-container">
+            <form class="chat-input-form" id="chat-form">
+                <textarea 
+                    class="chat-input" 
+                    id="chat-input" 
+                    placeholder="Ask about Easy Pills..."
+                    rows="1"
+                ></textarea>
+                <button type="submit" class="chat-send-btn" id="chat-send-btn" aria-label="Send message">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="m22 2-7 20-4-9-9-4Z"></path>
+                        <path d="M22 2 11 13"></path>
+                    </svg>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="script.js"></script>
+    <script src="ai-chat.js"></script>
+</body>
+</html>
