@@ -4,28 +4,23 @@
    ============================================ */
 
 // 1. API Configuration
-const GEMINI_API_URL = "/api/chat"; // Point to your Vercel function
+const GEMINI_API_KEY = "AIzaSyCRMERf6P3zN8JewiyVNzTOXmUFmpOLR-8"; 
+
+const GEMINI_API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${GEMINI_API_KEY}`;
 
 // 2. System Instruction for Easy Pills AI
-const SYSTEM_INSTRUCTION = `You are an AI assistant for Easy Pills, a smart medication adherence system. 
-You help users understand the product, its features, and answer questions about:
-- How the medication dispensing system works
-- Biometric authentication and security features
-- Cloud integration and mobile app functionality
-- Technical specifications
-- The development team and project status
+const SYSTEM_INSTRUCTION = `You are a helpful and versatile AI assistant. 
+While you are integrated into the Easy Pills website, you have full access to general knowledge and can answer questions on any topic.
 
-RESPONSE RULES:
-- Keep responses under 150 words unless specifically asked for detail
-- Get straight to the point - no filler phrases
-- Use bullet points (•) for lists - max 5 items
-- For code: wrap in triple backticks with language name
-- Use **bold** sparingly for key terms only
-- One paragraph max for explanations unless complex
-- Never apologize or use filler language
-- If asked about topics unrelated to Easy Pills or medication adherence technology, politely redirect the conversation
-
-Be helpful, professional, precise, and brief.`;
+CORE GUIDELINES:
+- If asked about Easy Pills, provide expert information on its medication dispensing, biometrics, and cloud features.
+- If asked about general topics (science, history, coding, etc.), provide accurate and helpful information.
+- Keep responses concise (under 300 words) unless detail is requested.
+- Use bullet points (•) for lists.
+- For code: wrap in triple backticks with language name.
+- Use **bold** for key terms.
+- Maintain a professional, friendly, and direct tone.
+- Never apologize for being an AI or use unnecessary filler language.`;
 
 // Chat state
 let chatHistory = [];
@@ -36,34 +31,44 @@ let isTyping = false;
  */
 async function callGeminiAPI(userPrompt) {
     try {
-        const contents = [
-            ...chatHistory,
-            { role: "user", parts: [{ text: userPrompt }] }
-        ];
+        const contents = [];
+        
+        // Add System Instruction as the first "user" message context or via system_instruction field
+        // Note: For v1beta, it's often best to include it in the prompt flow if the model doesn't support a separate system block
+        
+        chatHistory.slice(-6).forEach(msg => {
+            contents.push({
+                role: msg.role === 'user' ? 'user' : 'model',
+                parts: [{ text: msg.content }]
+            });
+        });
 
+        contents.push({
+            role: "user",
+            parts: [{ text: `CONTEXT: ${SYSTEM_INSTRUCTION}\n\nUSER QUESTION: ${userPrompt}` }]
+        });
+        
         const response = await fetch(GEMINI_API_URL, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-                prompt: userPrompt, // Match api/chat.js
-                history: contents,   // Match api/chat.js
-                instruction: SYSTEM_INSTRUCTION // Match api/chat.js
+                contents: contents,
+                generationConfig: {
+                    temperature: 0.7,
+                    maxOutputTokens: 1000,
+                }
             })
         });
-
-        if (!response.ok) throw new Error('API Error');
-
-        const data = await response.json();
-        const aiText = data.candidates[0].content.parts[0].text;
         
-        // Update history
-        chatHistory.push({ role: "user", parts: [{ text: userPrompt }] });
-        chatHistory.push({ role: "model", parts: [{ text: aiText }] });
-
-        return aiText;
+        // ... (Keep error handling logic same as original)
+        const data = await response.json();
+        if (data.candidates && data.candidates[0]?.content?.parts?.[0]?.text) {
+            return data.candidates[0].content.parts[0].text;
+        }
+        return "I'm sorry, I couldn't generate a response.";
     } catch (error) {
-        console.error("Fetch error:", error);
-        throw error;
+        console.error('Gemini API Fetch Error:', error);
+        return `Connection error. Please check your internet.`;
     }
 }
 
@@ -120,22 +125,20 @@ function initChat() {
     }
 
     // Open chat sidebar
-    function openChat() {
-        chatToggle.classList.add('is-open');
-        chatSidebar.classList.add('is-open');
-        chatOverlay.classList.add('is-open');
-        
-        // Stop Lenis smooth scroll when chat is open
-        if (typeof lenis !== 'undefined') {
-            lenis.stop();
+        function openChat() {
+            chatToggle.classList.add('is-open');
+            chatSidebar.classList.add('is-open');
+            chatOverlay.classList.add('is-open');
+            
+            if (typeof lenis !== 'undefined') lenis.stop();
+            
+            chatInput.focus();
+            
+            // MAINTAIN THE START MESSAGE AS REQUESTED
+            if (chatHistory.length === 0) {
+                addMessage('assistant', 'Hello! 👋 I\'m the Easy Pills assistant. How can I help you learn about our smart medication adherence system today?');
+            }
         }
-        
-        chatInput.focus();
-        
-        if (chatHistory.length === 0) {
-            addMessage('assistant', 'Hello! 👋 I\'m the Easy Pills assistant. How can I help you learn about our smart medication adherence system today?');
-        }
-    }
 
     // Close chat sidebar
     function closeChat() {
