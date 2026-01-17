@@ -1,16 +1,13 @@
-// =====================================================
-// EASY PILLS - AI CHATBOT (Gemini 2.5)
-// =====================================================
+/* ============================================
+   Easy Pills - Gemini AI Chatbot Integration
+   Minimalist Design with Pill Loading Animation
+   ============================================ */
 
-const GEMINI_API_KEY = 'AIzaSyDDmhraig2-rXxG3iw9rv1JwyQdPb7H0XA';
-const GEMINI_API_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent';
+// 1. API Configuration
+const GEMINI_API_URL = "/api/chat.js"; // Point to your Vercel function
 
-// Chat state
-let chatHistory = [];
-let isTyping = false;
-
-// System prompt for the AI assistant
-const SYSTEM_PROMPT = `You are an AI assistant for Easy Pills, a smart medication adherence system. 
+// 2. System Instruction for Easy Pills AI
+const SYSTEM_INSTRUCTION = `You are an AI assistant for Easy Pills, a smart medication adherence system. 
 You help users understand the product, its features, and answer questions about:
 - How the medication dispensing system works
 - Biometric authentication and security features
@@ -18,62 +15,234 @@ You help users understand the product, its features, and answer questions about:
 - Technical specifications
 - The development team and project status
 
-Be helpful, professional, and concise. If asked about topics unrelated to Easy Pills or medication adherence technology, politely redirect the conversation. 
-Keep responses under 150 words unless more detail is specifically requested.`;
+RESPONSE RULES:
+- Keep responses under 150 words unless specifically asked for detail
+- Get straight to the point - no filler phrases
+- Use bullet points (•) for lists - max 5 items
+- For code: wrap in triple backticks with language name
+- Use **bold** sparingly for key terms only
+- One paragraph max for explanations unless complex
+- Never apologize or use filler language
+- If asked about topics unrelated to Easy Pills or medication adherence technology, politely redirect the conversation
+
+Be helpful, professional, precise, and brief.`;
+
+// Chat state
+let chatHistory = [];
+let isTyping = false;
+
+/**
+ * Core API Call to Gemini using REST API
+ */
+async function callGeminiAPI(userPrompt) {
+    try {
+        const contents = [];
+        
+        chatHistory.slice(-6).forEach(msg => {
+            contents.push({
+                role: msg.role === 'user' ? 'user' : 'model',
+                parts: [{ text: msg.content }]
+            });
+        });
+
+        contents.push({
+            role: "user",
+            parts: [{ text: `INSTRUCTION: ${SYSTEM_INSTRUCTION}\n\nUSER QUESTION: ${userPrompt}` }]
+        });
+        
+        const response = await fetch(GEMINI_API_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    prompt: userPrompt,
+                    history: contents, // Your formatted history
+                    instruction: SYSTEM_INSTRUCTION
+                })
+            });
+        
+        if (!response.ok) {
+            const errorData = await response.json();
+            console.error('Gemini API Error details:', errorData);
+            
+            if (response.status === 429) {
+                return "⚠️ Rate limit reached. Please wait a moment.";
+            }
+            if (response.status === 400) {
+                return "⚠️ API Request Error. Please check if your API key is restricted or if the prompt is too long.";
+            }
+            throw new Error(errorData.error?.message || 'API request failed');
+        }
+        
+        const data = await response.json();
+        
+        if (data.candidates && data.candidates[0]?.content?.parts?.[0]?.text) {
+            return data.candidates[0].content.parts[0].text;
+        }
+        
+        return "I'm sorry, I couldn't generate a response. Please try rephrasing.";
+    } catch (error) {
+        console.error('Gemini API Fetch Error:', error);
+        return `Connection error. Please check your internet or API key.`;
+    }
+}
+
+/**
+ * Escape HTML for safe rendering
+ */
+function escapeHtml(text) {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+}
+
+/**
+ * Format AI response with HTML for professional display
+ */
+function formatAIResponse(text) {
+    let html = text;
+    
+    // Code blocks
+    html = html.replace(/```(\w+)?\n([\s\S]*?)```/g, (match, lang, code) => {
+        const language = lang || 'plaintext';
+        return `<div class="ai-code-container">
+            <div class="ai-code-toolbar"><span class="ai-code-language">${language}</span></div>
+            <pre class="ai-code-pre"><code class="ai-code">${escapeHtml(code.trim())}</code></pre>
+        </div>`;
+    });
+    
+    html = html.replace(/`([^`]+)`/g, '<code class="ai-inline-code">$1</code>');
+    html = html.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+    html = html.replace(/^[•\-\*]\s+(.+)$/gm, '<li class="ai-list-item">$1</li>');
+    html = html.replace(/(<li class="ai-list-item">.*<\/li>\n?)+/g, '<ul class="ai-list">$&</ul>');
+    html = html.replace(/\n/g, '<br>');
+    
+    return html;
+}
 
 // Initialize chat when DOM is ready
 document.addEventListener('DOMContentLoaded', initChat);
 
 function initChat() {
     const chatToggle = document.getElementById('chat-toggle');
-    const chatWindow = document.getElementById('chat-window');
+    const chatSidebar = document.getElementById('chat-sidebar');
+    const chatOverlay = document.getElementById('chat-overlay');
+    const chatClose = document.getElementById('chat-close');
     const chatForm = document.getElementById('chat-form');
     const chatInput = document.getElementById('chat-input');
+    const chatMessages = document.getElementById('chat-messages');
 
-    if (!chatToggle || !chatWindow) return;
+    if (!chatToggle || !chatSidebar || !chatForm) return;
 
-    // Toggle chat window
-    chatToggle.addEventListener('click', () => {
-        chatToggle.classList.toggle('is-open');
-        chatWindow.classList.toggle('is-open');
+    // Re-initialize Lucide icons for chat
+    if (typeof lucide !== 'undefined') {
+        lucide.createIcons();
+    }
+
+    // Open chat sidebar
+    function openChat() {
+        chatToggle.classList.add('is-open');
+        chatSidebar.classList.add('is-open');
+        chatOverlay.classList.add('is-open');
         
-        if (chatWindow.classList.contains('is-open')) {
-            chatInput.focus();
-            // Add welcome message if first time
-            if (chatHistory.length === 0) {
-                addMessage('assistant', 'Hello! 👋 I\'m the Easy Pills assistant. How can I help you learn about our smart medication adherence system today?');
-            }
+        // Stop Lenis smooth scroll when chat is open
+        if (typeof lenis !== 'undefined') {
+            lenis.stop();
+        }
+        
+        chatInput.focus();
+        
+        if (chatHistory.length === 0) {
+            addMessage('assistant', 'Hello! 👋 I\'m the Easy Pills assistant. How can I help you learn about our smart medication adherence system today?');
+        }
+    }
+
+    // Close chat sidebar
+    function closeChat() {
+        chatToggle.classList.remove('is-open');
+        chatSidebar.classList.remove('is-open');
+        chatOverlay.classList.remove('is-open');
+        
+        // Resume Lenis smooth scroll
+        if (typeof lenis !== 'undefined') {
+            lenis.start();
+        }
+    }
+
+    chatToggle.addEventListener('click', () => {
+        if (chatSidebar.classList.contains('is-open')) {
+            closeChat();
+        } else {
+            openChat();
         }
     });
 
-    // Handle form submission
+    chatClose.addEventListener('click', closeChat);
+    chatOverlay.addEventListener('click', closeChat);
+
+    // Close on Escape key
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && chatSidebar.classList.contains('is-open')) {
+            closeChat();
+        }
+    });
+
     chatForm.addEventListener('submit', async (e) => {
         e.preventDefault();
-        
         const message = chatInput.value.trim();
         if (!message || isTyping) return;
 
-        // Add user message
         addMessage('user', message);
         chatInput.value = '';
+        chatInput.style.height = 'auto';
 
-        // Get AI response
         await getAIResponse(message);
     });
 
-    // Auto-resize textarea
     chatInput.addEventListener('input', () => {
         chatInput.style.height = 'auto';
         chatInput.style.height = Math.min(chatInput.scrollHeight, 120) + 'px';
     });
 
-    // Handle Enter key (Shift+Enter for new line)
     chatInput.addEventListener('keydown', (e) => {
         if (e.key === 'Enter' && !e.shiftKey) {
             e.preventDefault();
             chatForm.dispatchEvent(new Event('submit'));
         }
     });
+
+    // Prevent wheel events from bubbling out of chat messages
+    if (chatMessages) {
+        chatMessages.addEventListener('wheel', (e) => {
+            const { scrollTop, scrollHeight, clientHeight } = chatMessages;
+            const isAtTop = scrollTop === 0;
+            const isAtBottom = scrollTop + clientHeight >= scrollHeight;
+            
+            if ((e.deltaY < 0 && isAtTop) || (e.deltaY > 0 && isAtBottom)) {
+                e.preventDefault();
+            }
+            e.stopPropagation();
+        }, { passive: false });
+
+        // Touch scroll handling
+        let touchStartY = 0;
+        chatMessages.addEventListener('touchstart', (e) => {
+            touchStartY = e.touches[0].clientY;
+        }, { passive: true });
+
+        chatMessages.addEventListener('touchmove', (e) => {
+            const touchY = e.touches[0].clientY;
+            const { scrollTop, scrollHeight, clientHeight } = chatMessages;
+            const isAtTop = scrollTop === 0;
+            const isAtBottom = scrollTop + clientHeight >= scrollHeight;
+            const isScrollingUp = touchY > touchStartY;
+            const isScrollingDown = touchY < touchStartY;
+            
+            if ((isScrollingUp && isAtTop) || (isScrollingDown && isAtBottom)) {
+                e.preventDefault();
+            }
+            e.stopPropagation();
+        }, { passive: false });
+    }
 }
 
 function addMessage(role, content) {
@@ -83,32 +252,25 @@ function addMessage(role, content) {
     const messageEl = document.createElement('div');
     messageEl.className = `chat-message ${role}`;
     
-    const iconSvg = role === 'user' 
-        ? '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>'
-        : '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8V4H8"></path><rect width="16" height="12" x="4" y="8" rx="2"></rect><path d="M2 14h2"></path><path d="M20 14h2"></path><path d="M15 13v2"></path><path d="M9 13v2"></path></svg>';
-
     messageEl.innerHTML = `
-        <div class="chat-message-avatar">
-            ${iconSvg}
-        </div>
-        <div class="chat-message-content">
-            ${formatMessage(content)}
+        <div class="chat-message-bubble">
+            <div class="chat-message-content">
+                ${role === 'assistant' ? formatAIResponse(content) : escapeHtml(content)}
+            </div>
+            <div class="chat-message-time">${new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</div>
         </div>
     `;
 
     messagesContainer.appendChild(messageEl);
-    messagesContainer.scrollTop = messagesContainer.scrollHeight;
-
-    // Store in history
+    
+    requestAnimationFrame(() => {
+        messagesContainer.scrollTo({
+            top: messagesContainer.scrollHeight,
+            behavior: 'smooth'
+        });
+    });
+    
     chatHistory.push({ role, content });
-}
-
-function formatMessage(content) {
-    // Basic markdown-like formatting
-    return content
-        .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-        .replace(/\*(.*?)\*/g, '<em>$1</em>')
-        .replace(/\n/g, '<br>');
 }
 
 function showTypingIndicator() {
@@ -119,97 +281,40 @@ function showTypingIndicator() {
     typingEl.className = 'chat-message assistant';
     typingEl.id = 'typing-indicator';
     typingEl.innerHTML = `
-        <div class="chat-message-avatar">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8V4H8"></path><rect width="16" height="12" x="4" y="8" rx="2"></rect><path d="M2 14h2"></path><path d="M20 14h2"></path><path d="M15 13v2"></path><path d="M9 13v2"></path></svg>
-        </div>
-        <div class="chat-typing">
-            <div class="chat-typing-dot"></div>
-            <div class="chat-typing-dot"></div>
-            <div class="chat-typing-dot"></div>
+        <div class="chat-message-bubble">
+            <div class="chat-typing-pill">
+                <div class="typing-pill-icon">💊</div>
+            </div>
         </div>
     `;
-
     messagesContainer.appendChild(typingEl);
-    messagesContainer.scrollTop = messagesContainer.scrollHeight;
+    
+    requestAnimationFrame(() => {
+        messagesContainer.scrollTo({
+            top: messagesContainer.scrollHeight,
+            behavior: 'smooth'
+        });
+    });
 }
 
 function hideTypingIndicator() {
     const typingEl = document.getElementById('typing-indicator');
-    if (typingEl) {
-        typingEl.remove();
-    }
+    if (typingEl) typingEl.remove();
 }
 
 async function getAIResponse(userMessage) {
     const sendBtn = document.getElementById('chat-send-btn');
-    
     isTyping = true;
     if (sendBtn) sendBtn.disabled = true;
     showTypingIndicator();
 
     try {
-        // Build conversation context
-        const contents = [
-            {
-                role: 'user',
-                parts: [{ text: SYSTEM_PROMPT }]
-            },
-            {
-                role: 'model',
-                parts: [{ text: 'I understand. I will act as the Easy Pills AI assistant and help users with questions about the medication adherence system.' }]
-            }
-        ];
-
-        // Add chat history (last 10 messages for context)
-        const recentHistory = chatHistory.slice(-10);
-        recentHistory.forEach(msg => {
-            contents.push({
-                role: msg.role === 'user' ? 'user' : 'model',
-                parts: [{ text: msg.content }]
-            });
-        });
-
-        // Add current message
-        contents.push({
-            role: 'user',
-            parts: [{ text: userMessage }]
-        });
-
-        const response = await fetch(`${GEMINI_API_URL}?key=${GEMINI_API_KEY}`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                contents: contents,
-                generationConfig: {
-                    temperature: 0.7,
-                    topK: 40,
-                    topP: 0.95,
-                    maxOutputTokens: 1024,
-                }
-            })
-        });
-
-        if (!response.ok) {
-            throw new Error(`API error: ${response.status}`);
-        }
-
-        const data = await response.json();
-        
+        const response = await callGeminiAPI(userMessage);
         hideTypingIndicator();
-
-        if (data.candidates && data.candidates[0]?.content?.parts?.[0]?.text) {
-            const aiResponse = data.candidates[0].content.parts[0].text;
-            addMessage('assistant', aiResponse);
-        } else {
-            throw new Error('Invalid response format');
-        }
-
+        addMessage('assistant', response);
     } catch (error) {
-        console.error('AI Chat Error:', error);
         hideTypingIndicator();
-        addMessage('assistant', 'I apologize, but I\'m having trouble connecting right now. Please try again in a moment.');
+        addMessage('assistant', 'Sorry, I encountered an error. Please check your console.');
     } finally {
         isTyping = false;
         if (sendBtn) sendBtn.disabled = false;
