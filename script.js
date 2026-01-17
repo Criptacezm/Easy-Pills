@@ -1,6 +1,7 @@
 // =====================================================
 // EASY PILLS - Caleb Raney Style Smooth Scroll
 // With Lenis + GSAP + ScrollTrigger
+// Complete Arabic Translation Support
 // =====================================================
 
 // Initialize Lucide Icons
@@ -38,7 +39,7 @@ function smoothScrollTo(target, duration = 1.5) {
     const element = typeof target === 'string' ? document.querySelector(target) : target;
     if (!element) return;
     
-    const offset = 100;
+    const offset = 80;
     const targetPosition = element.getBoundingClientRect().top + window.pageYOffset - offset;
     
     lenis.scrollTo(targetPosition, {
@@ -83,13 +84,42 @@ function initParallax() {
 }
 
 // =====================================================
-// LANGUAGE TOGGLE
+// LANGUAGE TOGGLE - Complete Arabic Translation
 // =====================================================
 let currentLang = 'en';
 const langToggle = document.getElementById('lang-toggle');
 const langText = document.getElementById('lang-text');
 const mobileLangToggle = document.getElementById('mobile-lang-toggle');
 const html = document.documentElement;
+
+// Arabic translations for hero title
+const heroTitleEn = `
+    <span class="hero-title-line">
+        <span class="hero-word" data-text="Easy Pills">Easy Pills</span>
+        <span class="hero-word italic" data-text="is a">is a</span>
+    </span>
+    <span class="hero-title-line">
+        <span class="hero-word italic" data-text="smart">smart</span>
+        <span class="hero-word" data-text="medication">medication</span>
+    </span>
+    <span class="hero-title-line">
+        <span class="hero-word" data-text="adherence system">adherence system</span>
+    </span>
+`;
+
+const heroTitleAr = `
+    <span class="hero-title-line">
+        <span class="hero-word" data-text="إيزي بيلز">إيزي بيلز</span>
+        <span class="hero-word italic" data-text="هو">هو</span>
+    </span>
+    <span class="hero-title-line">
+        <span class="hero-word italic" data-text="نظام">نظام</span>
+        <span class="hero-word" data-text="ذكي">ذكي</span>
+    </span>
+    <span class="hero-title-line">
+        <span class="hero-word" data-text="للالتزام بالأدوية">للالتزام بالأدوية</span>
+    </span>
+`;
 
 function toggleLanguage() {
     currentLang = currentLang === 'en' ? 'ar' : 'en';
@@ -106,18 +136,16 @@ function toggleLanguage() {
         const text = el.getAttribute(`data-${currentLang}`);
         if (text) {
             // Check if the element has HTML structure we need to preserve
-            if (el.classList.contains('mission-title') || el.classList.contains('section-title-large')) {
-                // Preserve italic span formatting
-                const italicMatch = text.match(/^(.+?)\s+(\S+)$/);
-                if (italicMatch && el.querySelector('.italic')) {
-                    // Keep the structure with italic span
-                    const parts = el.innerHTML.split(/<span class="italic">/);
-                    if (parts.length > 1) {
-                        const closingPart = parts[1].split('</span>');
-                        el.innerHTML = `${text.split(' ').slice(0, -1).join(' ')} <span class="italic">${text.split(' ').slice(-1)[0]}</span>`;
-                    } else {
-                        el.textContent = text;
-                    }
+            if (el.classList.contains('mission-title') || 
+                el.classList.contains('section-title-large') || 
+                el.classList.contains('contact-title')) {
+                // Check for italic span
+                const italicSpan = el.querySelector('.italic');
+                if (italicSpan) {
+                    const words = text.split(' ');
+                    const lastWord = words.pop();
+                    const firstPart = words.join(' ');
+                    el.innerHTML = `${firstPart} <span class="italic">${lastWord}</span>`;
                 } else {
                     el.textContent = text;
                 }
@@ -135,58 +163,27 @@ function toggleLanguage() {
         }
     });
     
-    // Force update hero title for Arabic
-    if (currentLang === 'ar') {
-        const heroTitle = document.querySelector('.hero-title');
-        if (heroTitle) {
-            heroTitle.innerHTML = `
-                <span class="hero-title-line">
-                    <span class="hero-word" data-text="Easy Pills">إيزي بيلز</span>
-                    <span class="hero-word italic" data-text="هو">هو</span>
-                </span>
-                <span class="hero-title-line">
-                    <span class="hero-word italic" data-text="نظام">نظام</span>
-                    <span class="hero-word" data-text="ذكي">ذكي</span>
-                </span>
-                <span class="hero-title-line">
-                    <span class="hero-word" data-text="للالتزام بالأدوية">للالتزام بالأدوية</span>
-                </span>
-            `;
-            // Re-animate hero words
-            gsap.to('.hero-word', {
+    // Update hero title
+    const heroTitle = document.getElementById('hero-title');
+    if (heroTitle) {
+        heroTitle.innerHTML = currentLang === 'ar' ? heroTitleAr : heroTitleEn;
+        // Re-animate hero words
+        gsap.fromTo('.hero-word', 
+            { opacity: 0, y: 50 },
+            {
                 opacity: 1,
                 y: 0,
                 duration: 0.6,
                 stagger: 0.08,
                 ease: 'power3.out'
-            });
-        }
-    } else {
-        const heroTitle = document.querySelector('.hero-title');
-        if (heroTitle) {
-            heroTitle.innerHTML = `
-                <span class="hero-title-line">
-                    <span class="hero-word" data-text="Easy Pills">Easy Pills</span>
-                    <span class="hero-word italic" data-text="is a">is a</span>
-                </span>
-                <span class="hero-title-line">
-                    <span class="hero-word italic" data-text="smart">smart</span>
-                    <span class="hero-word" data-text="medication">medication</span>
-                </span>
-                <span class="hero-title-line">
-                    <span class="hero-word" data-text="adherence system">adherence system</span>
-                </span>
-            `;
-            // Re-animate hero words
-            gsap.to('.hero-word', {
-                opacity: 1,
-                y: 0,
-                duration: 0.6,
-                stagger: 0.08,
-                ease: 'power3.out'
-            });
-        }
+            }
+        );
     }
+    
+    // Refresh ScrollTrigger for RTL changes
+    setTimeout(() => {
+        ScrollTrigger.refresh();
+    }, 100);
 }
 
 if (langToggle) {
@@ -245,12 +242,12 @@ preloaderTl
     }, '-=0.3');
 
 // =====================================================
-// CUSTOM CURSOR
+// CUSTOM CURSOR - Desktop Only
 // =====================================================
 const cursor = document.getElementById('cursor');
 const cursorFollower = document.getElementById('cursor-follower');
 
-if (cursor && cursorFollower && window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+if (cursor && cursorFollower && window.matchMedia('(hover: hover) and (pointer: fine) and (min-width: 1024px)').matches) {
     let mouseX = 0, mouseY = 0;
     let cursorX = 0, cursorY = 0;
     let followerX = 0, followerY = 0;
@@ -362,9 +359,9 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
 });
 
 // =====================================================
-// MAGNETIC EFFECT
+// MAGNETIC EFFECT - Desktop Only
 // =====================================================
-if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+if (window.matchMedia('(hover: hover) and (pointer: fine) and (min-width: 1024px)').matches) {
     const magneticElements = document.querySelectorAll('[data-magnetic]');
     
     magneticElements.forEach(el => {
@@ -495,10 +492,14 @@ function openTechModal(card) {
     lenis.stop();
     
     const icon = card.querySelector('.tech-card-icon').innerHTML;
-    const title = card.querySelector('.tech-card-title').textContent;
-    const text = card.querySelector('.tech-card-text').textContent;
-    const detail = card.querySelector('.tech-card-detail');
-    const detailText = detail ? detail.textContent : '';
+    const titleEl = card.querySelector('.tech-card-title');
+    const textEl = card.querySelector('.tech-card-text');
+    const detailEl = card.querySelector('.tech-card-detail');
+    
+    // Get text based on current language
+    const title = titleEl.getAttribute(`data-${currentLang}`) || titleEl.textContent;
+    const text = textEl.getAttribute(`data-${currentLang}`) || textEl.textContent;
+    const detailText = detailEl ? (detailEl.getAttribute(`data-${currentLang}`) || detailEl.textContent) : '';
     
     techModalIcon.innerHTML = icon;
     techModalTitle.textContent = title;
@@ -601,15 +602,15 @@ if (techModalOverlay) {
 }
 
 document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && techModalOverlay.classList.contains('is-open')) {
+    if (e.key === 'Escape' && techModalOverlay && techModalOverlay.classList.contains('is-open')) {
         closeTechModal();
     }
 });
 
 // =====================================================
-// HOVER EFFECTS FOR CARDS
+// HOVER EFFECTS FOR CARDS - Desktop Only
 // =====================================================
-if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+if (window.matchMedia('(hover: hover) and (pointer: fine) and (min-width: 1024px)').matches) {
     techCards.forEach(card => {
         card.addEventListener('mousemove', (e) => {
             const rect = card.getBoundingClientRect();
@@ -649,12 +650,19 @@ if (contactForm) {
         e.preventDefault();
         
         const btn = contactForm.querySelector('button[type="submit"]');
-        const originalText = btn.innerHTML;
-        btn.innerHTML = '<span>Message Sent! ✓</span>';
+        const btnText = btn.querySelector('span[data-en]');
+        const originalText = btnText ? btnText.textContent : 'Send Message';
+        const successText = currentLang === 'ar' ? 'تم الإرسال! ✓' : 'Message Sent! ✓';
+        
+        if (btnText) {
+            btnText.textContent = successText;
+        }
         btn.style.background = 'var(--color-success)';
         
         setTimeout(() => {
-            btn.innerHTML = originalText;
+            if (btnText) {
+                btnText.textContent = currentLang === 'ar' ? 'إرسال الرسالة' : 'Send Message';
+            }
             btn.style.background = '';
             contactForm.reset();
         }, 3000);
