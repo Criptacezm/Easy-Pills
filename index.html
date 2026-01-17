@@ -12,7 +12,7 @@
     <!-- Fonts - Elegant & Professional like Caleb Raney -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600&family=Noto+Sans+Arabic:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
     <!-- GSAP for scroll animations -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
@@ -51,8 +51,8 @@
         </div>
         <div class="preloader-content">
             <div class="preloader-logo">
-                <span class="preloader-text">Easy</span>
-                <span class="preloader-text accent">Pills</span>
+                <span class="preloader-text" data-en="Easy" data-ar="إيزي">Easy</span>
+                <span class="preloader-text accent" data-en="Pills" data-ar="بيلز">Pills</span>
             </div>
             <div class="preloader-line"></div>
         </div>
@@ -140,7 +140,7 @@
                     <span class="hero-badge-text" data-en="Senior Design Project 2026" data-ar="مشروع التصميم النهائي 2026">Senior Design Project 2026</span>
                 </div>
 
-                <h1 class="hero-title">
+                <h1 class="hero-title" id="hero-title">
                     <span class="hero-title-line">
                         <span class="hero-word" data-text="Easy Pills">Easy Pills</span>
                         <span class="hero-word italic" data-text="is a">is a</span>
@@ -182,7 +182,7 @@
                         <h3 class="mission-title" data-reveal data-en="The Adherence Crisis" data-ar="أزمة الالتزام بالأدوية">
                             The Adherence <span class="italic">Crisis</span>
                         </h3>
-                        <p class="mission-text" data-reveal data-en="Medication non-adherence accounts for nearly 50% of treatment failures and 125,000 deaths annually. The inability to track, verify, and dispense medication securely creates a gap in the healthcare continuum." data-ar="يمثل عدم الالتزام بالأدوية ما يقارب 50٪ من حالات فشل العلاج و125,000 حالة وفاة سنويًا.">
+                        <p class="mission-text" data-reveal data-en="Medication non-adherence accounts for nearly 50% of treatment failures and 125,000 deaths annually. The inability to track, verify, and dispense medication securely creates a gap in the healthcare continuum." data-ar="يُشكّل عدم الالتزام بتناول الأدوية ما يقارب 50٪ من حالات فشل العلاج و125,000 حالة وفاة سنوياً. إن عدم القدرة على تتبع الأدوية والتحقق منها وتوزيعها بشكل آمن يخلق فجوة في منظومة الرعاية الصحية.">
                             Medication non-adherence accounts for nearly 50% of treatment failures 
                             and 125,000 deaths annually. The inability to track, verify, and dispense 
                             medication securely creates a gap in the healthcare continuum.
@@ -190,8 +190,8 @@
 
                         <div class="stats-grid-new">
                             <div class="stat-card-new" data-reveal>
-                                <p class="stat-card-label"><span class="stat-highlight">Treatment failure</span> rate due to</p>
-                                <p class="stat-card-sublabel">non-adherence worldwide</p>
+                                <p class="stat-card-label"><span class="stat-highlight" data-en="Treatment failure" data-ar="نسبة فشل العلاج">Treatment failure</span> <span data-en="rate due to" data-ar="بسبب">rate due to</span></p>
+                                <p class="stat-card-sublabel" data-en="non-adherence worldwide" data-ar="عدم الالتزام بالعلاج عالمياً">non-adherence worldwide</p>
                                 <div class="stat-visual">
                                     <div class="stat-dots-pattern">
                                         <div class="dots-grid">
@@ -204,8 +204,8 @@
                                 </div>
                             </div>
                             <div class="stat-card-new" data-reveal>
-                                <p class="stat-card-label"><span class="stat-highlight">$100+ billion</span> in annual</p>
-                                <p class="stat-card-sublabel">healthcare costs from non-adherence</p>
+                                <p class="stat-card-label"><span class="stat-highlight" data-en="$100+ billion" data-ar="أكثر من 100 مليار دولار">$100+ billion</span> <span data-en="in annual" data-ar="سنوياً في">in annual</span></p>
+                                <p class="stat-card-sublabel" data-en="healthcare costs from non-adherence" data-ar="تكاليف الرعاية الصحية بسبب عدم الالتزام">healthcare costs from non-adherence</p>
                                 <div class="stat-visual">
                                     <div class="stat-bar-chart">
                                         <span class="bar bar-1"></span>
@@ -238,7 +238,7 @@
                     <h3 class="mission-title" data-reveal data-en="Intelligent Automation" data-ar="الأتمتة الذكية">
                         Intelligent <span class="italic">Automation</span>
                     </h3>
-                    <p class="mission-text" data-reveal>
+                    <p class="mission-text" data-reveal data-en="Easy Pills creates a closed-loop system. By combining biometric authentication with automated dispensing motors and cloud logging, we eliminate human error and unauthorized access." data-ar="يُنشئ نظام إيزي بيلز حلقة مغلقة متكاملة. من خلال دمج المصادقة البيومترية مع محركات التوزيع الآلي وتسجيل البيانات السحابية، نقضي على الأخطاء البشرية والوصول غير المصرح به.">
                         Easy Pills creates a closed-loop system. By combining biometric 
                         authentication with automated dispensing motors and cloud logging, 
                         we eliminate human error and unauthorized access.
@@ -247,15 +247,15 @@
                     <ul class="feature-list">
                         <li class="feature-list-item" data-reveal>
                             <span class="feature-list-dot"></span>
-                            <span class="feature-list-text">Zero-Trust Biometric Access</span>
+                            <span class="feature-list-text" data-en="Zero-Trust Biometric Access" data-ar="الوصول البيومتري بمبدأ انعدام الثقة">Zero-Trust Biometric Access</span>
                         </li>
                         <li class="feature-list-item" data-reveal>
                             <span class="feature-list-dot"></span>
-                            <span class="feature-list-text">Real-Time Cloud Telemetry</span>
+                            <span class="feature-list-text" data-en="Real-Time Cloud Telemetry" data-ar="القياس السحابي في الوقت الفعلي">Real-Time Cloud Telemetry</span>
                         </li>
                         <li class="feature-list-item" data-reveal>
                             <span class="feature-list-dot"></span>
-                            <span class="feature-list-text">Precision Stepper Motors</span>
+                            <span class="feature-list-text" data-en="Precision Stepper Motors" data-ar="محركات خطوية عالية الدقة">Precision Stepper Motors</span>
                         </li>
                     </ul>
                 </div>
@@ -270,7 +270,7 @@
                     <h2 class="section-title-large" data-reveal data-en="Technical Specifications" data-ar="المواصفات التقنية">
                         Technical <span class="italic">Specifications</span>
                     </h2>
-                    <p class="section-description" data-reveal>
+                    <p class="section-description" data-reveal data-en="A comprehensive overview of the hardware and software subsystems powering the device." data-ar="نظرة شاملة على الأنظمة الفرعية للأجهزة والبرمجيات التي تُشغّل الجهاز.">
                         A comprehensive overview of the hardware and software 
                         subsystems powering the device.
                     </p>
@@ -281,12 +281,12 @@
                         <div class="tech-card-icon">
                             <i data-lucide="fingerprint"></i>
                         </div>
-                        <h3 class="tech-card-title">Biometric Identity</h3>
-                        <p class="tech-card-text">
+                        <h3 class="tech-card-title" data-en="Biometric Identity" data-ar="الهوية البيومترية">Biometric Identity</h3>
+                        <p class="tech-card-text" data-en="Optical fingerprint sensor enabling multi-user authentication with 99.9% accuracy." data-ar="مستشعر بصمة ضوئي يتيح مصادقة متعددة المستخدمين بدقة 99.9٪.">
                             Optical fingerprint sensor enabling multi-user 
                             authentication with 99.9% accuracy.
                         </p>
-                        <div class="tech-card-detail">
+                        <div class="tech-card-detail" data-en="The R307 optical fingerprint module captures high-resolution images of fingerprints at 500 DPI. It stores up to 1000 fingerprint templates in onboard flash memory." data-ar="تلتقط وحدة البصمة الضوئية R307 صوراً عالية الدقة للبصمات بدقة 500 نقطة في البوصة. وتخزّن ما يصل إلى 1000 قالب بصمة في ذاكرة فلاش مدمجة.">
                             The R307 optical fingerprint module captures high-resolution images of fingerprints at 500 DPI. It stores up to 1000 fingerprint templates in onboard flash memory.
                         </div>
                     </div>
@@ -295,12 +295,12 @@
                         <div class="tech-card-icon">
                             <i data-lucide="cog"></i>
                         </div>
-                        <h3 class="tech-card-title">Robotic Dispensing</h3>
-                        <p class="tech-card-text">
+                        <h3 class="tech-card-title" data-en="Robotic Dispensing" data-ar="التوزيع الروبوتي">Robotic Dispensing</h3>
+                        <p class="tech-card-text" data-en="NEMA-17 stepper motors provide precise rotational control for exact dosage delivery." data-ar="توفر محركات NEMA-17 الخطوية تحكماً دورانياً دقيقاً لتوصيل الجرعة بدقة متناهية.">
                             NEMA-17 stepper motors provide precise rotational 
                             control for exact dosage delivery.
                         </p>
-                        <div class="tech-card-detail">
+                        <div class="tech-card-detail" data-en="Each NEMA-17 motor delivers 0.45 N·m of holding torque with 1.8° step resolution (200 steps/revolution)." data-ar="يوفر كل محرك NEMA-17 عزم دوران ثابت بقوة 0.45 نيوتن متر مع دقة خطوة 1.8 درجة (200 خطوة/دورة).">
                             Each NEMA-17 motor delivers 0.45 N·m of holding torque with 1.8° step resolution (200 steps/revolution).
                         </div>
                     </div>
@@ -309,12 +309,12 @@
                         <div class="tech-card-icon">
                             <i data-lucide="cloud"></i>
                         </div>
-                        <h3 class="tech-card-title">Cloud Infrastructure</h3>
-                        <p class="tech-card-text">
+                        <h3 class="tech-card-title" data-en="Cloud Infrastructure" data-ar="البنية السحابية">Cloud Infrastructure</h3>
+                        <p class="tech-card-text" data-en="Firebase Realtime Database integration for instant synchronization of logs and schedules." data-ar="تكامل مع قاعدة بيانات Firebase للمزامنة الفورية للسجلات والجداول الزمنية.">
                             Firebase Realtime Database integration for instant 
                             synchronization of logs and schedules.
                         </p>
-                        <div class="tech-card-detail">
+                        <div class="tech-card-detail" data-en="The cloud backend leverages Firebase Realtime Database for sub-100ms data synchronization across all connected devices." data-ar="تستفيد الواجهة الخلفية السحابية من Firebase لمزامنة البيانات في أقل من 100 مللي ثانية عبر جميع الأجهزة المتصلة.">
                             The cloud backend leverages Firebase Realtime Database for sub-100ms data synchronization across all connected devices.
                         </div>
                     </div>
@@ -323,12 +323,12 @@
                         <div class="tech-card-icon">
                             <i data-lucide="lock"></i>
                         </div>
-                        <h3 class="tech-card-title">Security Protocols</h3>
-                        <p class="tech-card-text">
+                        <h3 class="tech-card-title" data-en="Security Protocols" data-ar="بروتوكولات الأمان">Security Protocols</h3>
+                        <p class="tech-card-text" data-en="Physical chassis reinforcement combined with digital locking mechanisms." data-ar="تعزيز الهيكل المادي مع آليات قفل رقمية متقدمة.">
                             Physical chassis reinforcement combined with 
                             digital locking mechanisms.
                         </p>
-                        <div class="tech-card-detail">
+                        <div class="tech-card-detail" data-en="The enclosure features a 3mm aluminum chassis with tamper-evident seals and TLS 1.3 encryption." data-ar="يتميز الغلاف بهيكل من الألمنيوم بسماكة 3 مم مع أختام مقاومة للعبث وتشفير TLS 1.3.">
                             The enclosure features a 3mm aluminum chassis with tamper-evident seals and TLS 1.3 encryption.
                         </div>
                     </div>
@@ -337,12 +337,12 @@
                         <div class="tech-card-icon">
                             <i data-lucide="bell"></i>
                         </div>
-                        <h3 class="tech-card-title">Smart Notifications</h3>
-                        <p class="tech-card-text">
+                        <h3 class="tech-card-title" data-en="Smart Notifications" data-ar="الإشعارات الذكية">Smart Notifications</h3>
+                        <p class="tech-card-text" data-en="Local audiovisual alerts synchronized with mobile push notifications." data-ar="تنبيهات صوتية ومرئية محلية متزامنة مع إشعارات الهاتف المحمول.">
                             Local audiovisual alerts synchronized with 
                             mobile push notifications.
                         </p>
-                        <div class="tech-card-detail">
+                        <div class="tech-card-detail" data-en="The notification system combines a piezoelectric buzzer for audio alerts with RGB LED strips for visual indication." data-ar="يجمع نظام الإشعارات بين صفارة كهرضغطية للتنبيهات الصوتية وشرائط LED RGB للإشارة المرئية.">
                             The notification system combines a piezoelectric buzzer for audio alerts with RGB LED strips for visual indication.
                         </div>
                     </div>
@@ -351,12 +351,12 @@
                         <div class="tech-card-icon">
                             <i data-lucide="calendar-clock"></i>
                         </div>
-                        <h3 class="tech-card-title">Inventory Intelligence</h3>
-                        <p class="tech-card-text">
+                        <h3 class="tech-card-title" data-en="Inventory Intelligence" data-ar="ذكاء المخزون">Inventory Intelligence</h3>
+                        <p class="tech-card-text" data-en="Automated tracking of remaining pill counts and expiration dates." data-ar="تتبع آلي للكمية المتبقية من الحبوب وتواريخ انتهاء الصلاحية.">
                             Automated tracking of remaining pill counts 
                             and expiration dates.
                         </p>
-                        <div class="tech-card-detail">
+                        <div class="tech-card-detail" data-en="Load cells beneath each compartment measure medication weight with 0.1g precision, automatically calculating remaining doses." data-ar="تقيس خلايا الحمل أسفل كل حجرة وزن الدواء بدقة 0.1 جرام، محسوبة تلقائياً الجرعات المتبقية.">
                             Load cells beneath each compartment measure medication weight with 0.1g precision, automatically calculating remaining doses.
                         </div>
                     </div>
@@ -387,7 +387,7 @@
             <div class="container">
                 <div class="section-header">
                     <span class="section-number" data-reveal>03</span>
-                    <h2 class="section-title-large" data-reveal>
+                    <h2 class="section-title-large" data-reveal data-en="Process Architecture" data-ar="هندسة العمليات">
                         Process <span class="italic">Architecture</span>
                     </h2>
                 </div>
@@ -397,8 +397,8 @@
                         <div class="process-step-number">01</div>
                         <div class="process-step-content">
                             <div class="process-step-line"></div>
-                            <h3 class="process-step-title">Configuration</h3>
-                            <p class="process-step-text">Prescription schedule is set via App.</p>
+                            <h3 class="process-step-title" data-en="Configuration" data-ar="الإعداد">Configuration</h3>
+                            <p class="process-step-text" data-en="Prescription schedule is set via App." data-ar="يتم تعيين جدول الوصفة الطبية عبر التطبيق.">Prescription schedule is set via App.</p>
                         </div>
                     </div>
 
@@ -406,8 +406,8 @@
                         <div class="process-step-number">02</div>
                         <div class="process-step-content">
                             <div class="process-step-line"></div>
-                            <h3 class="process-step-title">Notification</h3>
-                            <p class="process-step-text">Device alerts user at scheduled time.</p>
+                            <h3 class="process-step-title" data-en="Notification" data-ar="الإشعار">Notification</h3>
+                            <p class="process-step-text" data-en="Device alerts user at scheduled time." data-ar="يُنبّه الجهاز المستخدم في الوقت المحدد.">Device alerts user at scheduled time.</p>
                         </div>
                     </div>
 
@@ -415,8 +415,8 @@
                         <div class="process-step-number">03</div>
                         <div class="process-step-content">
                             <div class="process-step-line"></div>
-                            <h3 class="process-step-title">Authentication</h3>
-                            <p class="process-step-text">Biometric scan verifies patient identity.</p>
+                            <h3 class="process-step-title" data-en="Authentication" data-ar="المصادقة">Authentication</h3>
+                            <p class="process-step-text" data-en="Biometric scan verifies patient identity." data-ar="تتحقق البصمة البيومترية من هوية المريض.">Biometric scan verifies patient identity.</p>
                         </div>
                     </div>
 
@@ -424,8 +424,8 @@
                         <div class="process-step-number">04</div>
                         <div class="process-step-content">
                             <div class="process-step-line"></div>
-                            <h3 class="process-step-title">Actuation</h3>
-                            <p class="process-step-text">Motor drives dispensing mechanism.</p>
+                            <h3 class="process-step-title" data-en="Actuation" data-ar="التشغيل">Actuation</h3>
+                            <p class="process-step-text" data-en="Motor drives dispensing mechanism." data-ar="يُشغّل المحرك آلية التوزيع.">Motor drives dispensing mechanism.</p>
                         </div>
                     </div>
 
@@ -433,8 +433,8 @@
                         <div class="process-step-number">05</div>
                         <div class="process-step-content">
                             <div class="process-step-line"></div>
-                            <h3 class="process-step-title">Telemetry</h3>
-                            <p class="process-step-text">Adherence event logged to cloud.</p>
+                            <h3 class="process-step-title" data-en="Telemetry" data-ar="القياس عن بُعد">Telemetry</h3>
+                            <p class="process-step-text" data-en="Adherence event logged to cloud." data-ar="يُسجَّل حدث الالتزام في السحابة.">Adherence event logged to cloud.</p>
                         </div>
                     </div>
                 </div>
@@ -448,7 +448,7 @@
                     <div class="status-stack">
                         <div class="section-header">
                             <span class="section-number" data-reveal>04</span>
-                            <h2 class="section-label" data-reveal>Technology Stack</h2>
+                            <h2 class="section-label" data-reveal data-en="Technology Stack" data-ar="مجموعة التقنيات">Technology Stack</h2>
                         </div>
 
                         <div class="stack-list">
@@ -457,8 +457,8 @@
                                     <i data-lucide="cpu"></i>
                                 </div>
                                 <div class="stack-item-content">
-                                    <h4 class="stack-item-title">Embedded Hardware</h4>
-                                    <p class="stack-item-text">
+                                    <h4 class="stack-item-title" data-en="Embedded Hardware" data-ar="الأجهزة المدمجة">Embedded Hardware</h4>
+                                    <p class="stack-item-text" data-en="ESP32 MCU • NEMA-17 Steppers • Optical Fingerprint Sensor • I2C LCD Integration" data-ar="متحكم ESP32 • محركات خطوية NEMA-17 • مستشعر بصمة ضوئي • تكامل شاشة I2C LCD">
                                         ESP32 MCU • NEMA-17 Steppers • Optical Fingerprint Sensor • I2C LCD Integration
                                     </p>
                                 </div>
@@ -469,8 +469,8 @@
                                     <i data-lucide="database"></i>
                                 </div>
                                 <div class="stack-item-content">
-                                    <h4 class="stack-item-title">Software & Cloud</h4>
-                                    <p class="stack-item-text">
+                                    <h4 class="stack-item-title" data-en="Software & Cloud" data-ar="البرمجيات والسحابة">Software & Cloud</h4>
+                                    <p class="stack-item-text" data-en="C++ Firmware • React Native Mobile Application • Firebase Realtime DB • MQTT Protocols" data-ar="برنامج C++ الثابت • تطبيق React Native للهاتف • قاعدة بيانات Firebase • بروتوكولات MQTT">
                                         C++ Firmware • React Native Mobile Application • Firebase Realtime DB • MQTT Protocols
                                     </p>
                                 </div>
@@ -480,25 +480,25 @@
 
                     <div class="status-progress">
                         <div class="section-header">
-                            <h2 class="section-label" data-reveal>Development Status</h2>
+                            <h2 class="section-label" data-reveal data-en="Development Status" data-ar="حالة التطوير">Development Status</h2>
                         </div>
 
                         <div class="progress-list">
                             <div class="progress-item" data-reveal>
-                                <span class="progress-item-label">Hardware Prototyping</span>
-                                <span class="progress-item-status progress-item-status--progress">In Progress</span>
+                                <span class="progress-item-label" data-en="Hardware Prototyping" data-ar="النموذج الأولي للأجهزة">Hardware Prototyping</span>
+                                <span class="progress-item-status progress-item-status--progress" data-en="In Progress" data-ar="قيد التنفيذ">In Progress</span>
                             </div>
                             <div class="progress-item" data-reveal>
-                                <span class="progress-item-label">Firmware Logic</span>
-                                <span class="progress-item-status progress-item-status--progress">In Progress</span>
+                                <span class="progress-item-label" data-en="Firmware Logic" data-ar="منطق البرنامج الثابت">Firmware Logic</span>
+                                <span class="progress-item-status progress-item-status--progress" data-en="In Progress" data-ar="قيد التنفيذ">In Progress</span>
                             </div>
                             <div class="progress-item" data-reveal>
-                                <span class="progress-item-label">Cloud Integration</span>
-                                <span class="progress-item-status progress-item-status--progress">In Progress</span>
+                                <span class="progress-item-label" data-en="Cloud Integration" data-ar="التكامل السحابي">Cloud Integration</span>
+                                <span class="progress-item-status progress-item-status--progress" data-en="In Progress" data-ar="قيد التنفيذ">In Progress</span>
                             </div>
                             <div class="progress-item" data-reveal>
-                                <span class="progress-item-label">Mobile App UI</span>
-                                <span class="progress-item-status progress-item-status--progress">In Progress</span>
+                                <span class="progress-item-label" data-en="Mobile App UI" data-ar="واجهة تطبيق الهاتف">Mobile App UI</span>
+                                <span class="progress-item-status progress-item-status--progress" data-en="In Progress" data-ar="قيد التنفيذ">In Progress</span>
                             </div>
                         </div>
                     </div>
@@ -511,10 +511,10 @@
             <div class="container">
                 <div class="section-header section-header-center">
                     <span class="section-number" data-reveal>05</span>
-                    <h2 class="section-title-large" data-reveal>
+                    <h2 class="section-title-large" data-reveal data-en="Project Team" data-ar="فريق المشروع">
                         Project <span class="italic">Team</span>
                     </h2>
-                    <p class="section-description" data-reveal>
+                    <p class="section-description" data-reveal data-en="Meet the talented engineers behind Easy Pills" data-ar="تعرّف على المهندسين الموهوبين خلف إيزي بيلز">
                         Meet the talented engineers behind Easy Pills
                     </p>
                 </div>
@@ -525,32 +525,32 @@
                             <div class="team-bar-pattern"></div>
                             <div class="team-bar-content">
                                 <span class="team-bar-number">01</span>
-                                <h3 class="team-bar-name">Giorgi Berikashvili</h3>
-                                <span class="team-bar-role">Hardware Engineering</span>
+                                <h3 class="team-bar-name" data-en="Giorgi Berikashvili" data-ar="جيورجي بيريكاشفيلي">Giorgi Berikashvili</h3>
+                                <span class="team-bar-role" data-en="Hardware Engineering" data-ar="هندسة الأجهزة">Hardware Engineering</span>
                             </div>
                         </div>
                         <div class="team-bar team-bar-2" data-member="teodore">
                             <div class="team-bar-pattern"></div>
                             <div class="team-bar-content">
                                 <span class="team-bar-number">02</span>
-                                <h3 class="team-bar-name">Teodore Gelashvili</h3>
-                                <span class="team-bar-role">Firmware Development</span>
+                                <h3 class="team-bar-name" data-en="Teodore Gelashvili" data-ar="تيودور غيلاشفيلي">Teodore Gelashvili</h3>
+                                <span class="team-bar-role" data-en="Firmware Development" data-ar="تطوير البرنامج الثابت">Firmware Development</span>
                             </div>
                         </div>
                         <div class="team-bar team-bar-3" data-member="yousef">
                             <div class="team-bar-pattern"></div>
                             <div class="team-bar-content">
                                 <span class="team-bar-number">03</span>
-                                <h3 class="team-bar-name">Yousef Maher</h3>
-                                <span class="team-bar-role">Cloud Architecture</span>
+                                <h3 class="team-bar-name" data-en="Yousef Maher" data-ar="يوسف ماهر">Yousef Maher</h3>
+                                <span class="team-bar-role" data-en="Cloud Architecture" data-ar="هندسة السحابة">Cloud Architecture</span>
                             </div>
                         </div>
                         <div class="team-bar team-bar-4" data-member="rayan">
                             <div class="team-bar-pattern"></div>
                             <div class="team-bar-content">
                                 <span class="team-bar-number">04</span>
-                                <h3 class="team-bar-name">Rayan Jalwan</h3>
-                                <span class="team-bar-role">Mobile Application</span>
+                                <h3 class="team-bar-name" data-en="Rayan Jalwan" data-ar="ريان جلوان">Rayan Jalwan</h3>
+                                <span class="team-bar-role" data-en="Mobile Application" data-ar="تطبيق الهاتف">Mobile Application</span>
                             </div>
                         </div>
                     </div>
@@ -565,12 +565,12 @@
                     <div class="contact-info">
                         <div class="section-header">
                             <span class="section-number" data-reveal>06</span>
-                            <h2 class="section-label" data-reveal>Get In Touch</h2>
+                            <h2 class="section-label" data-reveal data-en="Get In Touch" data-ar="تواصل معنا">Get In Touch</h2>
                         </div>
-                        <h3 class="contact-title" data-reveal>
+                        <h3 class="contact-title" data-reveal data-en="Let's Work Together" data-ar="لنعمل معاً">
                             Let's Work <span class="italic">Together</span>
                         </h3>
-                        <p class="contact-text" data-reveal>
+                        <p class="contact-text" data-reveal data-en="Have questions about Easy Pills or interested in collaboration? We'd love to hear from you. Reach out and let's discuss how we can improve medication adherence together." data-ar="هل لديك أسئلة حول إيزي بيلز أو مهتم بالتعاون؟ يسعدنا سماعك. تواصل معنا ودعنا نناقش كيف يمكننا تحسين الالتزام بالأدوية معاً.">
                             Have questions about Easy Pills or interested in collaboration? 
                             We'd love to hear from you. Reach out and let's discuss how we 
                             can improve medication adherence together.
@@ -582,7 +582,7 @@
                                     <i data-lucide="mail"></i>
                                 </div>
                                 <div class="contact-detail-content">
-                                    <span class="contact-detail-label">Email Us</span>
+                                    <span class="contact-detail-label" data-en="Email Us" data-ar="راسلنا">Email Us</span>
                                     <a href="mailto:team@easypills.io" class="contact-detail-value">team@easypills.io</a>
                                 </div>
                             </div>
@@ -591,8 +591,8 @@
                                     <i data-lucide="map-pin"></i>
                                 </div>
                                 <div class="contact-detail-content">
-                                    <span class="contact-detail-label">Location</span>
-                                    <span class="contact-detail-value">Ilia State University, Tbilisi</span>
+                                    <span class="contact-detail-label" data-en="Location" data-ar="الموقع">Location</span>
+                                    <span class="contact-detail-value" data-en="Ilia State University, Tbilisi" data-ar="جامعة إيليا الحكومية، تبليسي">Ilia State University, Tbilisi</span>
                                 </div>
                             </div>
                         </div>
@@ -601,23 +601,23 @@
                     <div class="contact-form-wrapper" data-reveal>
                         <form class="contact-form" id="contact-form">
                             <div class="form-group">
-                                <label class="form-label" for="name">Your Name</label>
-                                <input type="text" id="name" class="form-input" placeholder="Yousef" required>
+                                <label class="form-label" for="name" data-en="Your Name" data-ar="اسمك">Your Name</label>
+                                <input type="text" id="name" class="form-input" placeholder="Yousef" data-placeholder-en="Yousef" data-placeholder-ar="يوسف" required>
                             </div>
                             <div class="form-group">
-                                <label class="form-label" for="email">Email Address</label>
-                                <input type="email" id="email" class="form-input" placeholder="yousef@example.com" required>
+                                <label class="form-label" for="email" data-en="Email Address" data-ar="البريد الإلكتروني">Email Address</label>
+                                <input type="email" id="email" class="form-input" placeholder="yousef@example.com" data-placeholder-en="yousef@example.com" data-placeholder-ar="yousef@example.com" required>
                             </div>
                             <div class="form-group">
-                                <label class="form-label" for="subject">Subject</label>
-                                <input type="text" id="subject" class="form-input" placeholder="How can we help?" required>
+                                <label class="form-label" for="subject" data-en="Subject" data-ar="الموضوع">Subject</label>
+                                <input type="text" id="subject" class="form-input" placeholder="How can we help?" data-placeholder-en="How can we help?" data-placeholder-ar="كيف يمكننا مساعدتك؟" required>
                             </div>
                             <div class="form-group">
-                                <label class="form-label" for="message">Message</label>
-                                <textarea id="message" class="form-textarea" rows="5" placeholder="Tell us about your inquiry..." required></textarea>
+                                <label class="form-label" for="message" data-en="Message" data-ar="الرسالة">Message</label>
+                                <textarea id="message" class="form-textarea" rows="5" placeholder="Tell us about your inquiry..." data-placeholder-en="Tell us about your inquiry..." data-placeholder-ar="أخبرنا عن استفسارك..." required></textarea>
                             </div>
                             <button type="submit" class="btn btn-primary btn-full">
-                                <span>Send Message</span>
+                                <span data-en="Send Message" data-ar="إرسال الرسالة">Send Message</span>
                                 <span class="btn-arrow">→</span>
                             </button>
                         </form>
@@ -633,17 +633,17 @@
             <div class="footer-inner">
                 <div class="footer-brand">
                     <h3 class="footer-title">Easy<span class="italic">Pills</span></h3>
-                    <p class="footer-subtitle">Intelligent Medication Management</p>
+                    <p class="footer-subtitle" data-en="Intelligent Medication Management" data-ar="إدارة الأدوية الذكية">Intelligent Medication Management</p>
                 </div>
 
                 <div class="footer-info">
-                    <p class="footer-org">Ilia State University</p>
-                    <p class="footer-project">Senior Design Project 2026</p>
+                    <p class="footer-org" data-en="Ilia State University" data-ar="جامعة إيليا الحكومية">Ilia State University</p>
+                    <p class="footer-project" data-en="Senior Design Project 2026" data-ar="مشروع التصميم النهائي 2026">Senior Design Project 2026</p>
                 </div>
             </div>
 
             <div class="footer-bottom">
-                <p class="footer-copyright">© 2026 Easy Pills. All rights reserved.</p>
+                <p class="footer-copyright" data-en="© 2026 Easy Pills. All rights reserved." data-ar="© 2026 إيزي بيلز. جميع الحقوق محفوظة.">© 2026 Easy Pills. All rights reserved.</p>
             </div>
         </div>
     </footer>
@@ -690,6 +690,8 @@
                     class="chat-input" 
                     id="chat-input" 
                     placeholder="Ask about Easy Pills..."
+                    data-placeholder-en="Ask about Easy Pills..."
+                    data-placeholder-ar="اسأل عن إيزي بيلز..."
                     rows="1"
                     data-lenis-prevent
                 ></textarea>
