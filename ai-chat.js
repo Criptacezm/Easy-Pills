@@ -36,53 +36,34 @@ let isTyping = false;
  */
 async function callGeminiAPI(userPrompt) {
     try {
-        const contents = [];
-        
-        chatHistory.slice(-6).forEach(msg => {
-            contents.push({
-                role: msg.role === 'user' ? 'user' : 'model',
-                parts: [{ text: msg.content }]
-            });
+        const contents = [
+            ...chatHistory,
+            { role: "user", parts: [{ text: userPrompt }] }
+        ];
+
+        const response = await fetch(GEMINI_API_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                prompt: userPrompt, // Match api/chat.js
+                history: contents,   // Match api/chat.js
+                instruction: SYSTEM_INSTRUCTION // Match api/chat.js
+            })
         });
 
-        contents.push({
-            role: "user",
-            parts: [{ text: `INSTRUCTION: ${SYSTEM_INSTRUCTION}\n\nUSER QUESTION: ${userPrompt}` }]
-        });
-        
-        const response = await fetch(GEMINI_API_URL, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    prompt: userPrompt,
-                    history: contents, // Your formatted history
-                    instruction: SYSTEM_INSTRUCTION
-                })
-            });
-        
-        if (!response.ok) {
-            const errorData = await response.json();
-            console.error('Gemini API Error details:', errorData);
-            
-            if (response.status === 429) {
-                return "⚠️ Rate limit reached. Please wait a moment.";
-            }
-            if (response.status === 400) {
-                return "⚠️ API Request Error. Please check if your API key is restricted or if the prompt is too long.";
-            }
-            throw new Error(errorData.error?.message || 'API request failed');
-        }
-        
+        if (!response.ok) throw new Error('API Error');
+
         const data = await response.json();
+        const aiText = data.candidates[0].content.parts[0].text;
         
-        if (data.candidates && data.candidates[0]?.content?.parts?.[0]?.text) {
-            return data.candidates[0].content.parts[0].text;
-        }
-        
-        return "I'm sorry, I couldn't generate a response. Please try rephrasing.";
+        // Update history
+        chatHistory.push({ role: "user", parts: [{ text: userPrompt }] });
+        chatHistory.push({ role: "model", parts: [{ text: aiText }] });
+
+        return aiText;
     } catch (error) {
-        console.error('Gemini API Fetch Error:', error);
-        return `Connection error. Please check your internet or API key.`;
+        console.error("Fetch error:", error);
+        throw error;
     }
 }
 
@@ -320,4 +301,3 @@ async function getAIResponse(userMessage) {
         if (sendBtn) sendBtn.disabled = false;
     }
 }
-
