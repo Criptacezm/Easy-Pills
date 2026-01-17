@@ -1,15 +1,16 @@
 /* ============================================
    Easy Pills - Gemini AI Chatbot Integration
    Minimalist Design with Pill Loading Animation
+   Complete Arabic Support
    ============================================ */
 
 // 1. API Configuration
-const GEMINI_API_KEY = "AIzaSyCRMERf6P3zN8JewiyVNzTOXmUFmpOLR-8"; 
+const GEMINI_API_KEY = ""; 
 
 const GEMINI_API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${GEMINI_API_KEY}`;
 
 // 2. System Instruction for Easy Pills AI
-const SYSTEM_INSTRUCTION = `You are a helpful and versatile AI assistant. 
+const SYSTEM_INSTRUCTION_EN = `You are a helpful and versatile AI assistant. 
 While you are integrated into the Easy Pills website, you have full access to general knowledge and can answer questions on any topic.
 
 CORE GUIDELINES:
@@ -22,9 +23,27 @@ CORE GUIDELINES:
 - Maintain a professional, friendly, and direct tone.
 - Never apologize for being an AI or use unnecessary filler language.`;
 
+const SYSTEM_INSTRUCTION_AR = `أنت مساعد ذكي ومتعدد المهارات.
+بينما أنت مدمج في موقع إيزي بيلز، لديك وصول كامل للمعرفة العامة ويمكنك الإجابة على أسئلة في أي موضوع.
+
+الإرشادات الأساسية:
+- إذا سُئلت عن إيزي بيلز، قدم معلومات متخصصة عن توزيع الأدوية والقياسات الحيوية وميزات السحابة.
+- إذا سُئلت عن مواضيع عامة (علوم، تاريخ، برمجة، إلخ)، قدم معلومات دقيقة ومفيدة.
+- اجعل الردود موجزة (أقل من 300 كلمة) ما لم يُطلب التفصيل.
+- استخدم النقاط (•) للقوائم.
+- للكود: اغلفه بثلاث علامات اقتباس مع اسم اللغة.
+- استخدم **الخط العريض** للمصطلحات الرئيسية.
+- حافظ على نبرة مهنية وودية ومباشرة.
+- أجب دائماً باللغة العربية.`;
+
 // Chat state
 let chatHistory = [];
 let isTyping = false;
+
+// Get current language
+function getCurrentLang() {
+    return document.documentElement.getAttribute('lang') || 'en';
+}
 
 /**
  * Core API Call to Gemini using REST API
@@ -32,9 +51,8 @@ let isTyping = false;
 async function callGeminiAPI(userPrompt) {
     try {
         const contents = [];
-        
-        // Add System Instruction as the first "user" message context or via system_instruction field
-        // Note: For v1beta, it's often best to include it in the prompt flow if the model doesn't support a separate system block
+        const currentLang = getCurrentLang();
+        const systemInstruction = currentLang === 'ar' ? SYSTEM_INSTRUCTION_AR : SYSTEM_INSTRUCTION_EN;
         
         chatHistory.slice(-6).forEach(msg => {
             contents.push({
@@ -45,7 +63,7 @@ async function callGeminiAPI(userPrompt) {
 
         contents.push({
             role: "user",
-            parts: [{ text: `CONTEXT: ${SYSTEM_INSTRUCTION}\n\nUSER QUESTION: ${userPrompt}` }]
+            parts: [{ text: `CONTEXT: ${systemInstruction}\n\nUSER QUESTION: ${userPrompt}` }]
         });
         
         const response = await fetch(GEMINI_API_URL, {
@@ -60,15 +78,18 @@ async function callGeminiAPI(userPrompt) {
             })
         });
         
-        // ... (Keep error handling logic same as original)
         const data = await response.json();
         if (data.candidates && data.candidates[0]?.content?.parts?.[0]?.text) {
             return data.candidates[0].content.parts[0].text;
         }
-        return "I'm sorry, I couldn't generate a response.";
+        return getCurrentLang() === 'ar' 
+            ? "عذراً، لم أتمكن من إنشاء رد."
+            : "I'm sorry, I couldn't generate a response.";
     } catch (error) {
         console.error('Gemini API Fetch Error:', error);
-        return `Connection error. Please check your internet.`;
+        return getCurrentLang() === 'ar'
+            ? "خطأ في الاتصال. يرجى التحقق من اتصالك بالإنترنت."
+            : "Connection error. Please check your internet.";
     }
 }
 
@@ -125,20 +146,23 @@ function initChat() {
     }
 
     // Open chat sidebar
-        function openChat() {
-            chatToggle.classList.add('is-open');
-            chatSidebar.classList.add('is-open');
-            chatOverlay.classList.add('is-open');
-            
-            if (typeof lenis !== 'undefined') lenis.stop();
-            
-            chatInput.focus();
-            
-            // MAINTAIN THE START MESSAGE AS REQUESTED
-            if (chatHistory.length === 0) {
-                addMessage('assistant', 'Hello! 👋 I\'m the Easy Pills assistant. How can I help you learn about our smart medication adherence system today?');
-            }
+    function openChat() {
+        chatToggle.classList.add('is-open');
+        chatSidebar.classList.add('is-open');
+        chatOverlay.classList.add('is-open');
+        
+        if (typeof lenis !== 'undefined') lenis.stop();
+        
+        chatInput.focus();
+        
+        // Show welcome message based on language
+        if (chatHistory.length === 0) {
+            const welcomeMessage = getCurrentLang() === 'ar'
+                ? 'مرحباً! 👋 أنا مساعد إيزي بيلز. كيف يمكنني مساعدتك في معرفة المزيد عن نظام الالتزام الذكي بالأدوية اليوم؟'
+                : 'Hello! 👋 I\'m the Easy Pills assistant. How can I help you learn about our smart medication adherence system today?';
+            addMessage('assistant', welcomeMessage);
         }
+    }
 
     // Close chat sidebar
     function closeChat() {
@@ -298,7 +322,10 @@ async function getAIResponse(userMessage) {
         addMessage('assistant', response);
     } catch (error) {
         hideTypingIndicator();
-        addMessage('assistant', 'Sorry, I encountered an error. Please check your console.');
+        const errorMessage = getCurrentLang() === 'ar'
+            ? 'عذراً، واجهت خطأ. يرجى التحقق من وحدة التحكم.'
+            : 'Sorry, I encountered an error. Please check your console.';
+        addMessage('assistant', errorMessage);
     } finally {
         isTyping = false;
         if (sendBtn) sendBtn.disabled = false;
