@@ -4,7 +4,7 @@
    ============================================ */
 
 // 1. API Configuration
-const GEMINI_API_URL = "/api/chat.js"; // Point to your Vercel function
+const GEMINI_API_URL = "/api/chat"; // Point to your Vercel function
 
 // 2. System Instruction for Easy Pills AI
 const SYSTEM_INSTRUCTION = `You are an AI assistant for Easy Pills, a smart medication adherence system. 
@@ -320,3 +320,4 @@ async function getAIResponse(userMessage) {
         if (sendBtn) sendBtn.disabled = false;
     }
 }
+
