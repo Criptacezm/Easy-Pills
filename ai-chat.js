@@ -331,3 +331,4 @@ async function getAIResponse(userMessage) {
         if (sendBtn) sendBtn.disabled = false;
     }
 }
+
